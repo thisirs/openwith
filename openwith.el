@@ -98,6 +98,8 @@ where the symbol 'file' is replaced by the file to be opened."
                                         (mapconcat #'identity params " "))))
               (openwith-open (cadr oa) params)
               (kill-buffer nil)
+              (when (featurep 'recentf)
+                (recentf-add-file file))
               ;; inhibit further actions
               (error "Opened %s in external program"
                      (file-name-nondirectory file))))))))
