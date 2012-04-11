@@ -63,6 +63,12 @@ where the symbol 'file' is replaced by the file to be opened."
   :group 'openwith
   :type 'boolean)
 
+(defun openwith-make-extension-regexp (strings)
+  "Make a regexp that matches a string that starts with a '.',
+has any of the supplied STRINGS, and is at the end of the
+string."
+  (concat "\\." (regexp-opt extension-strings) "$"))
+
 (defun openwith-open (command arglist)
   "Run external command COMMAND, in such a way that it is
   disowned from the parent Emacs process.  If Emacs dies, the
