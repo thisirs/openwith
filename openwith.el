@@ -63,6 +63,22 @@ where the symbol 'file' is replaced by the file to be opened."
   :group 'openwith
   :type 'boolean)
 
+(defun openwith-open (command arglist)
+  "Run external command COMMAND, in such a way that it is
+  disowned from the parent Emacs process.  If Emacs dies, the
+  process spawned here lives on.  ARGLIST is a list of strings,
+  each an argument to COMMAND."
+  (let ((shell-file-name "/bin/sh"))
+    (start-process-shell-command
+     "openwith-process" nil
+     (mapconcat 'identity
+                (concatenate 'list
+                             '("nohup")
+                             (list command)
+                             (mapcar 'shell-quote-argument arglist)
+                             '(">/dev/null"))
+                " "))))
+
 (defun openwith-file-handler (operation &rest args)
   "Open file with external program, if an association is configured."
   (when (and openwith-mode (not (buffer-modified-p)) (zerop (buffer-size)))
@@ -80,7 +96,7 @@ where the symbol 'file' is replaced by the file to be opened."
             (when (or (not openwith-confirm-invocation)
                       (y-or-n-p (format "%s %s? " (cadr oa)
                                         (mapconcat #'identity params " "))))
-              (apply #'start-process "openwith-process" nil (cadr oa) params)
+              (openwith-open (cadr oa) params)
               (kill-buffer nil)
               ;; inhibit further actions
               (error "Opened %s in external program"
