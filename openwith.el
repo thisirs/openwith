@@ -4,7 +4,7 @@
 
 ;; Author: Markus Triska <markus.triska@gmx.at>
 ;; Keywords: files, processes
-;; URL: 
+;; URL: https://bitbucket.org/jpkotta/openwith
 ;; Version: 20120530
 
 ;; This file is free software; you can redistribute it and/or modify
