@@ -77,13 +77,9 @@ string."
   (let ((shell-file-name "/bin/sh"))
     (start-process-shell-command
      "openwith-process" nil
-     (mapconcat 'identity
-                (concatenate 'list
-                             '("nohup")
-                             (list command)
-                             (mapcar 'shell-quote-argument arglist)
-                             '(">/dev/null"))
-                " "))))
+     (concat "exec nohup " command " "
+             (mapconcat 'shell-quote-argument arglist " ")
+             " >/dev/null"))))
 
 (defun openwith-file-handler (operation &rest args)
   "Open file with external program, if an association is configured."
