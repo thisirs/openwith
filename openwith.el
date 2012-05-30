@@ -4,6 +4,8 @@
 
 ;; Author: Markus Triska <markus.triska@gmx.at>
 ;; Keywords: files, processes
+;; URL: 
+;; Version: 20120530
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,8 +37,6 @@
 ;;    M-x customize-group RET openwith RET
 
 ;;; Code:
-
-(defconst openwith-version "0.8f")
 
 (defgroup openwith nil
   "Associate external applications with file name patterns."
