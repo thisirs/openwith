@@ -69,17 +69,26 @@ has any of the supplied STRINGS, and is at the end of the
 string."
   (concat "\\." (regexp-opt strings) "$"))
 
-(defun openwith-open (command arglist)
+(defun openwith-open-unix (command arglist)
   "Run external command COMMAND, in such a way that it is
   disowned from the parent Emacs process.  If Emacs dies, the
   process spawned here lives on.  ARGLIST is a list of strings,
   each an argument to COMMAND."
   (let ((shell-file-name "/bin/sh"))
     (start-process-shell-command
+     (concat
+      "exec nohup " command " " 
+      (mapconcat 'shell-quote-argument arglist " ")
+      (" >/dev/null"))
      "openwith-process" nil
-     (concat "exec nohup " command " "
-             (mapconcat 'shell-quote-argument arglist " ")
-             " >/dev/null"))))
+     )))
+
+(defun openwith-open-windows (file)
+  "Run external command COMMAND, in such a way that it is
+  disowned from the parent Emacs process.  If Emacs dies, the
+  process spawned here lives on.  ARGLIST is a list of strings,
+  each an argument to COMMAND."
+  (w32-shell-execute "open" file))
 
 (defun openwith-file-handler (operation &rest args)
   "Open file with external program, if an association is configured."
@@ -98,7 +107,9 @@ string."
             (when (or (not openwith-confirm-invocation)
                       (y-or-n-p (format "%s %s? " (cadr oa)
                                         (mapconcat #'identity params " "))))
-              (openwith-open (cadr oa) params)
+	      (if (eq system-type 'windows-nt)
+		  (openwith-open-windows file)
+		(openwith-open-unix (cadr oa) params))
               (kill-buffer nil)
               (when (featurep 'recentf)
                 (recentf-add-file file))
