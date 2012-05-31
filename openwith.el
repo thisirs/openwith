@@ -76,12 +76,12 @@ string."
   each an argument to COMMAND."
   (let ((shell-file-name "/bin/sh"))
     (start-process-shell-command
+     "openwith-process" nil
      (concat
       "exec nohup " command " " 
       (mapconcat 'shell-quote-argument arglist " ")
-      (" >/dev/null"))
-     "openwith-process" nil
-     )))
+      " >/dev/null"))
+     ))
 
 (defun openwith-open-windows (file)
   "Run external command COMMAND, in such a way that it is
