@@ -30,5 +30,3 @@ Here's an example configuration for your init.el:
       (openwith-mode 1))
 
 See also http://www.emacswiki.org/emacs/OpenWith.
-
-I have attempted to contact the author, but he hasn't responded.
