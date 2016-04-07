@@ -114,7 +114,7 @@ string."
               (when (featurep 'recentf)
                 (recentf-add-file file))
               ;; inhibit further actions
-              (error "Opened %s in external program"
+              (user-error "Opened %s in external program"
                      (file-name-nondirectory file))))))))
   ;; when no association was found, relay the operation to other handlers
   (let ((inhibit-file-name-handlers
